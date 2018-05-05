@@ -1,5 +1,6 @@
 package A04_TraverseTree;
 
+import java.util.HashSet;
 import java.util.Set;
 
 
@@ -20,9 +21,45 @@ public class Wörterbuch {
 	 * @return Zahl der Wörter (=Anzahl der Elemente)
 	 */
 	public int countWordsInSubTree(Wort w) {
+		if(w == null)
+			return 0; 
 		
-		return 0;
+		String wordToSearch = w.getWort(); 
+		Wort neededWort = getNeededWord(getRoot(), wordToSearch); 
+		return getWordsUnderWord(neededWort);
 	}
+	
+	private int getWordsUnderWord(Wort w)
+	{
+		if(w == null)
+			return 0; 
+		
+		int currentWordCount = 1; 
+		currentWordCount += getWordsUnderWord(w.getLeft()); 
+		currentWordCount += getWordsUnderWord(w.getRight());
+		return currentWordCount; 
+	}
+	
+	private Wort getNeededWord(Wort w, String wordToSearch)
+	{
+		if(w == null)
+			return null; 
+		
+		int cmpVal = wordToSearch.compareTo(w.getWort());
+		if(cmpVal == 0)
+			return w; 
+		
+		else if(cmpVal < 0)
+		{
+			return getNeededWord(w.getLeft(), wordToSearch); 
+		}
+		else //is on right side
+		{
+			return getNeededWord(w.getRight(), wordToSearch); 
+		}
+	}
+	
+	
 
 	/**
 	 * Liefert die Menge aller Wörter retour, die ein spezifisches Präfix haben.
@@ -30,8 +67,25 @@ public class Wörterbuch {
 	 * @return Menge aller zutreffenden Wörter
 	 */
 	public Set<String> getWordsWithPrefix(String prefix) {
+		Set<String> foundWords = new HashSet<>(); 
 		
-		return null;
+		addWordsWithPrefix(getRoot(), prefix, foundWords); 
+		return foundWords;
+	}
+	
+	private void addWordsWithPrefix(Wort w, String prefix, Set<String> set)
+	{
+		if(w == null)
+			return; 
+		
+		String prefixOfCurrentWord = w.getWort().substring(0, prefix.length());
+		int cmpVal = prefix.compareTo(prefixOfCurrentWord);
+		
+		if(cmpVal == 0)
+			set.add(w.getWort());
+		
+		addWordsWithPrefix(w.getLeft(), prefix, set); 
+		addWordsWithPrefix(w.getRight(), prefix, set); 
 	}
 	
 
