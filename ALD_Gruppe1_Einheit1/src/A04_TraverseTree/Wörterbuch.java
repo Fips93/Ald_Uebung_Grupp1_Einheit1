@@ -53,9 +53,7 @@ public class Wörterbuch {
 		if(foundOnLeft != null)
 			return foundOnLeft; 
 		else //return null or found word from right side
-		{
 			return getNeededWord(w.getRight(), wordToSearch); 
-		}
 	}
 	
 	
