@@ -46,14 +46,13 @@ public class Wörterbuch {
 			return null; 
 		
 		int cmpVal = wordToSearch.compareTo(w.getWort());
-		if(cmpVal == 0)
+		if(cmpVal == 0) //found
 			return w; 
 		
-		else if(cmpVal < 0)
-		{
-			return getNeededWord(w.getLeft(), wordToSearch); 
-		}
-		else //is on right side
+		Wort foundOnLeft = getNeededWord(w.getLeft(), wordToSearch); 
+		if(foundOnLeft != null)
+			return foundOnLeft; 
+		else //return null or found word from right side
 		{
 			return getNeededWord(w.getRight(), wordToSearch); 
 		}
